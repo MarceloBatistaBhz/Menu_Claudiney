@@ -1,10 +1,27 @@
 """Menu Claudiney - Portal de entrada para aplicativos."""
 
+import base64
 import subprocess
 import sys
 import tkinter as tk
 
 VERSION = "0.1.0"
+
+# Ícone exit_to_app (Material Symbols) renderizado como PNG 48x48, vermelho
+EXIT_ICON_B64 = (
+    "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACJ0lEQVR4nO2Y34eWQRTHP+/j"
+    "7Wb7C44kRZJuorqbm2r7pRFdl35IFFFJbP/B2ohulkSy6q6rzN3qIo6oNkpSSySlSReVaIl2"
+    "y/As47XleTPzvPtmPjfvmXHe88z3MeeceQYKhUJhkHSaOnprTgIXgPVAlWk9C8AsMC5Op5IJ"
+    "8NacBiZpl6NNRDR9k+HNt81YE6duw2DrIvslcIQ8TAEba3tDSgHxVpsTpzNkwFsz1+/uyJWM"
+    "rVHlCOqt2emtaVzhlpUAb81xYBq41oaIKmUwb80B4HqdM6FvTOYW0W3ody+yQ6P5E8+A98Ca"
+    "enwKmAfOkIlO6oDemrXAfWB1NH1VnJ5r8N8ZYMviWJx2Ws8BcfoG2AF8iKbPemuuMCxVSJy+"
+    "BrYDH6Pp896aiYHkgLfmV6LnXfTWzIvTS4niMYhGNuatOTTMAqaBO22X0W3/EHslcBtYFc09"
+    "AA6K0x+0KUD6PLx5a1YAd3sW/xTYL06/s8yPEh3gBrC3p/ntEadfB1WFRqPhN3H66C/ul4HD"
+    "0fgtsEucfiID3T4Sb5EnwNalnLw1x3q+3kIfGBWn78hElThe2PcvavsLsLtuagyFAHH6OSwaeA"
+    "7sE6fhNytV6oDiNJyBNovTh7RAlSOoOA33O61QMeR0G/r9jHxHvDVLVqEEjET2QkoBoRFtqu1"
+    "wb/OY/Mym3ELjtM9EMgHi9Fa4q6xv5XIm6ALwCjghTm9mfE6hUCgUCoXCf8Fvc/eOXsYrPy0A"
+    "AAAASUVORK5CYII="
+)
 
 APPS = [
     {
@@ -121,22 +138,20 @@ def main():
         )
         btn.grid(row=2, column=j, padx=8, pady=8)
 
-    # Botão de sair (ícone ✕) no canto inferior direito
+    # Botão de sair (ícone exit_to_app) no canto inferior direito
     exit_frame = tk.Frame(root, bg="#2C3E50")
     exit_frame.pack(fill="x", padx=30, pady=(0, 15))
 
+    exit_icon = tk.PhotoImage(data=base64.b64decode(EXIT_ICON_B64))
     exit_btn = tk.Label(
         exit_frame,
-        text="\u2716",
-        font=("Segoe UI", 18),
-        fg="#E74C3C",
+        image=exit_icon,
         bg="#2C3E50",
         cursor="hand2",
     )
+    exit_btn.image = exit_icon  # manter referência para evitar garbage collection
     exit_btn.pack(side="right")
     exit_btn.bind("<Button-1>", lambda e: root.destroy())
-    exit_btn.bind("<Enter>", lambda e: exit_btn.configure(fg="#FF6B6B"))
-    exit_btn.bind("<Leave>", lambda e: exit_btn.configure(fg="#E74C3C"))
 
     # Centralizar janela na tela
     root.update_idletasks()
