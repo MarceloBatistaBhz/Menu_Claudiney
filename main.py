@@ -34,16 +34,13 @@ APPS = [
 ]
 
 
-def launch_app(path, root):
-    """Executa o aplicativo selecionado e fecha o menu."""
+def launch_app(path):
+    """Executa o aplicativo selecionado."""
     try:
         subprocess.Popen([path])
     except FileNotFoundError:
-        tk.messagebox.showerror(
-            "Erro", f"Executável não encontrado:\n{path}"
-        )
-        return
-    root.destroy()
+        from tkinter import messagebox
+        messagebox.showerror("Erro", f"Executável não encontrado:\n{path}")
 
 
 def main():
@@ -94,7 +91,7 @@ def main():
             cursor="hand2",
             relief="flat",
             bd=0,
-            command=lambda p=app["path"]: launch_app(p, root),
+            command=lambda p=app["path"]: launch_app(p),
         )
         btn.grid(row=row, column=col, padx=8, pady=8)
 
@@ -123,6 +120,23 @@ def main():
             disabledforeground="#BDC3C7",
         )
         btn.grid(row=2, column=j, padx=8, pady=8)
+
+    # Botão de sair (ícone ✕) no canto inferior direito
+    exit_frame = tk.Frame(root, bg="#2C3E50")
+    exit_frame.pack(fill="x", padx=30, pady=(0, 15))
+
+    exit_btn = tk.Label(
+        exit_frame,
+        text="\u2716",
+        font=("Segoe UI", 18),
+        fg="#E74C3C",
+        bg="#2C3E50",
+        cursor="hand2",
+    )
+    exit_btn.pack(side="right")
+    exit_btn.bind("<Button-1>", lambda e: root.destroy())
+    exit_btn.bind("<Enter>", lambda e: exit_btn.configure(fg="#FF6B6B"))
+    exit_btn.bind("<Leave>", lambda e: exit_btn.configure(fg="#E74C3C"))
 
     # Centralizar janela na tela
     root.update_idletasks()
